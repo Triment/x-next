@@ -1,0 +1,18 @@
+services:
+  db:
+    image: postgres
+    restart: always
+    environment:
+      POSTGRES_PASSWORD: admin@cd123
+      POSTGRES_USER: admin
+      POSTGRES_DB: dev
+      PGDATA: "./postgres/data"
+    ports:
+      - 5432:5432
+  web:
+    build: .
+    restart: always
+    ports:
+      - 3000:3000
+    depends_on:
+      - db

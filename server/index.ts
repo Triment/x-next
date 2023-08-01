@@ -4,6 +4,8 @@ import { createYoga, createSchema } from 'graphql-yoga';
 import { useServer } from 'graphql-ws/lib/use/ws';
 import { parse } from 'url';
 import next from 'next';
+import { typeDefs } from './Graphql/Schema/typeDefs.generated.js';
+import { resolvers } from './Graphql/Schema/resolvers.generated.js';
 const dev = process.env.NODE_ENV !== 'production';
 const hostname = 'localhost';
 const port = 3000;
@@ -18,29 +20,8 @@ const yoga = createYoga({
         subscriptionsProtocol: 'WS'
     },
     schema: createSchema({
-        typeDefs: /* GraphQL */ `
-      type Query {
-        hello: String!
-      }
-      type Subscription {
-        clock: String!
-      }
-    `,
-        resolvers: {
-            Query: {
-                hello: () => 'world'
-            },
-            Subscription: {
-                clock: {
-                    async *subscribe() {
-                        for (let i = 0; i < 5; i++) {
-                            yield { clock: new Date().toString() };
-                            await new Promise(resolve => setTimeout(resolve, 1000));
-                        }
-                    }
-                }
-            }
-        }
+        typeDefs,
+        resolvers,
     })
 });
 (async () => {
