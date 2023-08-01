@@ -1,0 +1,44 @@
+{
+  "name": "next-default",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "postcss": {
+    "plugins": {
+      "tailwindcss": {},
+      "autoprefixer": {}
+    }
+  },
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint",
+    "emit": "nodemon",
+    "tsc": "tsc -p ./tsconfig.server.json",
+    "prod": "NODE_ENV=production node build/index.js"
+  },
+  "dependencies": {
+    "@types/node": "20.4.5",
+    "@types/react": "18.2.18",
+    "@types/react-dom": "18.2.7",
+    "autoprefixer": "10.4.14",
+    "eslint": "8.46.0",
+    "eslint-config-next": "13.4.12",
+    "graphql": "^16.7.1",
+    "graphql-ws": "^5.14.0",
+    "graphql-yoga": "^4.0.3",
+    "next": "13.4.12",
+    "postcss": "8.4.27",
+    "react": "18.2.0",
+    "react-dom": "18.2.0",
+    "tailwindcss": "3.3.3",
+    "typescript": "5.1.6",
+    "ws": "^8.13.0"
+  },
+  "devDependencies": {
+    "@types/ws": "^8.5.5",
+    "nodemon": "^3.0.1",
+    "ts-node": "^10.9.1"
+  }
+}

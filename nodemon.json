@@ -1,0 +1,9 @@
+{
+  "watch": [
+    "server"
+  ],
+  "ext": "ts,json",
+  "ignore": [
+  ],
+  "exec": "ts-node-esm server/index.ts"
+}

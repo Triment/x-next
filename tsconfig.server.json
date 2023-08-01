@@ -1,0 +1,27 @@
+{
+  "compilerOptions": {
+    "target": "ES2022",
+    "allowJs": true,
+    "skipLibCheck": true,
+    "strict": true,
+    "forceConsistentCasingInFileNames": true,
+    "esModuleInterop": true,
+    "module": "ES6",
+    "moduleResolution": "Bundler",
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "allowSyntheticDefaultImports": true,
+    "paths": {
+      "@/*": ["./*"]
+    },
+    "outDir": "./build"
+  },
+  "include": ["next-env.d.ts", "server/**/*.ts"],
+  "exclude": ["node_modules","next-env.d.ts", "**/*.tsx", ".next/types/**/*.ts", "app/**/*.tsx"],
+  "ts-node": {
+    "transpileOnly": true,
+    "compilerOptions": {
+      "module": "ES6"
+    }
+  }
+}
