@@ -4,25 +4,33 @@ import { createYoga, createSchema } from 'graphql-yoga';
 import { useServer } from 'graphql-ws/lib/use/ws';
 import { parse } from 'url';
 import next from 'next';
+import { config } from 'dotenv'
+
 import { typeDefs } from './Graphql/Schema/typeDefs.generated.js';
 import { resolvers } from './Graphql/Schema/resolvers.generated.js';
+import { ContextType, context } from './YogaContext.js';
+import { pubSub } from './YogaPubSub.js';
+
+config()
+
 const dev = process.env.NODE_ENV !== 'production';
 const hostname = 'localhost';
 const port = 3000;
 // prepare nextjs
 const app = next({ dev, hostname, port });
 // match the route next would use if yoga was in `pages/api/graphql.ts`
-const graphqlEndpoint = '/api/graphql';
+const graphqlEndpoint = process.env.GRAPHQL_PATH!;
 // prepare yoga
 const yoga = createYoga({
     graphqlEndpoint,
     graphiql: {
         subscriptionsProtocol: 'WS'
     },
-    schema: createSchema({
+    schema: createSchema<ContextType>({
         typeDefs,
         resolvers,
-    })
+    }),
+    context
 });
 (async () => {
     await app.prepare();
