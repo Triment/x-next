@@ -5,7 +5,7 @@ const config: CodegenConfig = {
   schema: './server/Graphql/Schema/**/*/schema.graphql',
   documents: ['app/**/*.tsx', 'app/**/*.ts', 'components/**/*.tsx', 'components/**/*.ts'],
   ignoreNoDocuments: true,
-  emitLegacyCommonJSImports: false,
+  emitLegacyCommonJSImports: true,
   generates: {
     'server/Graphql/Schema': defineConfig({
       emitLegacyCommonJSImports: false,

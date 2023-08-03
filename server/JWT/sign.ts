@@ -1,7 +1,8 @@
 import { createSecretKey } from 'crypto'
 import { JWTPayload, SignJWT } from 'jose'
+import Global from './../../env.js'
 
-export const SecretKey = createSecretKey(process.env.JWT_SECRET!, 'utf-8')
+export const SecretKey = createSecretKey(Global.JWT_SECRET, 'utf-8')
 export function customSign(payload: JWTPayload) {
   return new SignJWT(payload)
     .setProtectedHeader({ alg: 'HS256' })

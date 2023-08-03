@@ -1,0 +1,24 @@
+#import User from "../User/schema.graphql"
+
+type Channel {
+  id: ID
+  users: [User]
+}
+
+type Message {
+  from: User
+  body: String
+}
+
+type Query {
+  channels: [Channel]
+}
+
+type Mutation {
+  joinUser(channelId: ID, id: ID): Boolean
+  send(channelId: ID, body: String):Boolean
+}
+
+type Subscription {
+  exchange(id: ID): Message
+}

@@ -1,15 +1,14 @@
-import { createServer } from 'http';
-import { WebSocketServer } from 'ws';
-import { createYoga, createSchema } from 'graphql-yoga';
+import { config } from 'dotenv';
 import { useServer } from 'graphql-ws/lib/use/ws';
-import { parse } from 'url';
+import { createSchema, createYoga } from 'graphql-yoga';
+import { createServer } from 'http';
 import next from 'next';
-import { config } from 'dotenv'
+import { parse } from 'url';
+import { WebSocketServer } from 'ws';
 
-import { typeDefs } from './Graphql/Schema/typeDefs.generated.js';
 import { resolvers } from './Graphql/Schema/resolvers.generated.js';
-import { ContextType, context } from './YogaContext.js';
-import { pubSub } from './YogaPubSub.js';
+import { typeDefs } from './Graphql/Schema/typeDefs.generated.js';
+import { context } from './YogaContext.js';
 
 config()
 
@@ -26,7 +25,7 @@ const yoga = createYoga({
     graphiql: {
         subscriptionsProtocol: 'WS'
     },
-    schema: createSchema<ContextType>({
+    schema: createSchema({
         typeDefs,
         resolvers,
     }),
@@ -83,10 +82,12 @@ const yoga = createYoga({
             return args;
         }
     }, wsServer);
-    await new Promise((resolve, reject) => server.listen(port, () => { }));
-    console.log(`
-> App started!
-  HTTP server running on http://${hostname}:${port}
-  GraphQL WebSocket server running on ws://${hostname}:${port}${graphqlEndpoint}
-`);
+    await new Promise((resolve, reject) => server.listen(port, () => {
+        console.log(`
+        > App started!
+        HTTP server running on http://${hostname}:${port}
+        GraphQL WebSocket server running on ws://${hostname}:${port}${graphqlEndpoint}
+        `);
+     }));
+    
 })();

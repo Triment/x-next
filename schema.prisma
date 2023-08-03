@@ -10,4 +10,11 @@ generator client {
 
 model User {
     id String @id@default(uuid())
+    name String
+    channels Channel[]
+}
+
+model Channel {
+  id String @id@default(uuid())
+  users User[]
 }
