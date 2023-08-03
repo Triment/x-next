@@ -19,7 +19,7 @@ const wsExchange = subscriptionExchange({
     };
   },
 });
-const ssr = ssrExchange();
+const ssr = ssrExchange({ isClient: true });
 
 async function initializeAuthState() {
   if (typeof window === 'undefined') {
@@ -31,9 +31,9 @@ async function initializeAuthState() {
 
 const auth = authExchange(async (utils)=>{
   const { token }= await initializeAuthState();
+  console.warn(token)
   return {
     addAuthToOperation(operation:any) {
-       let token = localStorage.getItem('token');
       if (!token) return operation;
       return utils.appendHeaders(operation, {
         Authorization: `Bearer ${token}`,

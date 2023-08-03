@@ -25,6 +25,8 @@ const documents = {
     types.ChannelsDocument,
   'query GetUserToken {\n  token(id: "cd32c3d5-830a-4031-b661-2d8e79eda74c")\n}':
     types.GetUserTokenDocument,
+  'mutation SaveFile($file: File = "") {\n  saveFile(file: $file)\n}':
+    types.SaveFileDocument,
 };
 
 /**
@@ -83,6 +85,12 @@ export function graphql(
 export function graphql(
   source: 'query GetUserToken {\n  token(id: "cd32c3d5-830a-4031-b661-2d8e79eda74c")\n}',
 ): (typeof documents)['query GetUserToken {\n  token(id: "cd32c3d5-830a-4031-b661-2d8e79eda74c")\n}'];
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(
+  source: 'mutation SaveFile($file: File = "") {\n  saveFile(file: $file)\n}',
+): (typeof documents)['mutation SaveFile($file: File = "") {\n  saveFile(file: $file)\n}'];
 
 export function graphql(source: string) {
   return (documents as any)[source] ?? {};

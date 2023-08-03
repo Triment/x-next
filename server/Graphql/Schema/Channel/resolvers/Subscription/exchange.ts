@@ -11,7 +11,7 @@ export const exchange: NonNullable<SubscriptionResolvers["exchange"]> = {
     //       users: true,
     //     },
     //   });
-    console.log(_args, "id");
+    console.log(_args, "id", _ctx.user);
     return pipe(_ctx.pubSub.subscribe("channel", _args.id!));
     // }
     // return pipe(Repeater.merge([undefined]));

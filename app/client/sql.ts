@@ -39,3 +39,7 @@ export const CHANNELS = graphql(`query Channels {
 export const GET_USER_TOKEN = graphql(`query GetUserToken {
   token(id: "cd32c3d5-830a-4031-b661-2d8e79eda74c")
 }`)
+
+export const UPLOAD_FILE = graphql(`mutation SaveFile($file: File = "") {
+  saveFile(file: $file)
+}`)

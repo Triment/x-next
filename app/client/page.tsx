@@ -3,7 +3,7 @@
 import { useClient, useMutation, useQuery, useSubscription } from "@urql/next";
 // import { useQuery } from '@urql/next';
 import { Suspense, useState } from "react";
-import { CHANNELS, GET_USER_TOKEN, PUBSUB_CHANNEL, SEND_CHANNEL, USERS } from "./sql";
+import { CHANNELS, GET_USER_TOKEN, PUBSUB_CHANNEL, SEND_CHANNEL, UPLOAD_FILE, USERS } from "./sql";
 // import { PUBSUB_CHANNEL } from './sql';
 
 export default function Page() {
@@ -30,6 +30,9 @@ const Main = () => {
   }, (prev:any = [], data)=>{
     return [...prev, data.exchange]
   })
+
+  const [,uploadFile] = useMutation(UPLOAD_FILE)
+
   const [userToken,getUserToken] = useQuery({ query: GET_USER_TOKEN, pause: true })
 
   const [sendRes, sendToChannel] = useMutation(SEND_CHANNEL)
@@ -61,7 +64,7 @@ const Main = () => {
         {
           data && (data as unknown as any).map((item:any, i:number)=>{
             return <div key={i}>
-              <h1>{item.from.id}</h1>
+              <h1>{item.from&&item.from.id}</h1>
               <p>{item.body}</p>
             </div>
           })
@@ -72,6 +75,10 @@ const Main = () => {
         sendToChannel({ channelId, body: msg})
       }}>发送</button>
     </div>
+
+    <input type="file" multiple onChange={({ target: { files }})=>{
+      uploadFile({ file: files![0]})
+    }}/>
   </div>
 };
 

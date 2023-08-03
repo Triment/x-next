@@ -27,6 +27,7 @@ export type Scalars = {
   Boolean: { input: boolean; output: boolean };
   Int: { input: number; output: number };
   Float: { input: number; output: number };
+  File: { input: any; output: any };
 };
 
 export type Channel = {
@@ -44,12 +45,17 @@ export type Message = {
 export type Mutation = {
   __typename?: "Mutation";
   joinUser?: Maybe<Scalars["Boolean"]["output"]>;
+  saveFile: Scalars["Boolean"]["output"];
   send?: Maybe<Scalars["Boolean"]["output"]>;
 };
 
 export type MutationJoinUserArgs = {
   channelId?: InputMaybe<Scalars["ID"]["input"]>;
   id?: InputMaybe<Scalars["ID"]["input"]>;
+};
+
+export type MutationSaveFileArgs = {
+  file: Scalars["File"]["input"];
 };
 
 export type MutationSendArgs = {
@@ -154,6 +160,12 @@ export type ChannelsQuery = {
 export type GetUserTokenQueryVariables = Exact<{ [key: string]: never }>;
 
 export type GetUserTokenQuery = { __typename?: "Query"; token?: string | null };
+
+export type SaveFileMutationVariables = Exact<{
+  file?: InputMaybe<Scalars["File"]["input"]>;
+}>;
+
+export type SaveFileMutation = { __typename?: "Mutation"; saveFile: boolean };
 
 export const PubSubChannelDocument = {
   kind: "Document",
@@ -428,3 +440,40 @@ export const GetUserTokenDocument = {
     },
   ],
 } as unknown as DocumentNode<GetUserTokenQuery, GetUserTokenQueryVariables>;
+export const SaveFileDocument = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "OperationDefinition",
+      operation: "mutation",
+      name: { kind: "Name", value: "SaveFile" },
+      variableDefinitions: [
+        {
+          kind: "VariableDefinition",
+          variable: { kind: "Variable", name: { kind: "Name", value: "file" } },
+          type: { kind: "NamedType", name: { kind: "Name", value: "File" } },
+          defaultValue: { kind: "StringValue", value: "", block: false },
+        },
+      ],
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "saveFile" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "file" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "file" },
+                },
+              },
+            ],
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<SaveFileMutation, SaveFileMutationVariables>;

@@ -1,4 +1,8 @@
-import { GraphQLResolveInfo } from "graphql";
+import {
+  GraphQLResolveInfo,
+  GraphQLScalarType,
+  GraphQLScalarTypeConfig,
+} from "graphql";
 import { User as UserModel } from "@prisma/client";
 import { ContextDefs } from "./contextType.js";
 export type Maybe<T> = T | null;
@@ -22,6 +26,9 @@ export type Incremental<T> =
       [P in keyof T]?: P extends " $fragmentName" | "__typename" ? T[P] : never;
     };
 export type Omit<T, K extends keyof T> = Pick<T, Exclude<keyof T, K>>;
+export type RequireFields<T, K extends keyof T> = Omit<T, K> & {
+  [P in K]-?: NonNullable<T[P]>;
+};
 /** All built-in and custom scalars, mapped to their actual values */
 export type Scalars = {
   ID: { input: string; output: string | number };
@@ -29,6 +36,7 @@ export type Scalars = {
   Boolean: { input: boolean; output: boolean };
   Int: { input: number; output: number };
   Float: { input: number; output: number };
+  File: { input: any; output: any };
 };
 
 export type Channel = {
@@ -46,12 +54,17 @@ export type Message = {
 export type Mutation = {
   __typename?: "Mutation";
   joinUser?: Maybe<Scalars["Boolean"]["output"]>;
+  saveFile: Scalars["Boolean"]["output"];
   send?: Maybe<Scalars["Boolean"]["output"]>;
 };
 
 export type MutationJoinUserArgs = {
   channelId?: InputMaybe<Scalars["ID"]["input"]>;
   id?: InputMaybe<Scalars["ID"]["input"]>;
+};
+
+export type MutationSaveFileArgs = {
+  file: Scalars["File"]["input"];
 };
 
 export type MutationSendArgs = {
@@ -199,6 +212,7 @@ export type ResolversTypes = {
     }
   >;
   ID: ResolverTypeWrapper<Scalars["ID"]["output"]>;
+  File: ResolverTypeWrapper<Scalars["File"]["output"]>;
   Message: ResolverTypeWrapper<
     Omit<Message, "from"> & { from?: Maybe<ResolversTypes["User"]> }
   >;
@@ -216,6 +230,7 @@ export type ResolversParentTypes = {
     users?: Maybe<Array<Maybe<ResolversParentTypes["User"]>>>;
   };
   ID: Scalars["ID"]["output"];
+  File: Scalars["File"]["output"];
   Message: Omit<Message, "from"> & {
     from?: Maybe<ResolversParentTypes["User"]>;
   };
@@ -241,6 +256,11 @@ export type ChannelResolvers<
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
+export interface FileScalarConfig
+  extends GraphQLScalarTypeConfig<ResolversTypes["File"], any> {
+  name: "File";
+}
+
 export type MessageResolvers<
   ContextType = ContextDefs,
   ParentType extends
@@ -261,6 +281,12 @@ export type MutationResolvers<
     ParentType,
     ContextType,
     Partial<MutationJoinUserArgs>
+  >;
+  saveFile?: Resolver<
+    ResolversTypes["Boolean"],
+    ParentType,
+    ContextType,
+    RequireFields<MutationSaveFileArgs, "file">
   >;
   send?: Resolver<
     Maybe<ResolversTypes["Boolean"]>,
@@ -320,6 +346,7 @@ export type UserResolvers<
 
 export type Resolvers<ContextType = ContextDefs> = {
   Channel?: ChannelResolvers<ContextType>;
+  File?: GraphQLScalarType;
   Message?: MessageResolvers<ContextType>;
   Mutation?: MutationResolvers<ContextType>;
   Query?: QueryResolvers<ContextType>;
