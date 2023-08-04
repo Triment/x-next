@@ -24,7 +24,7 @@ export default function Page() {
     import("peerjs").then(async ({ Peer }) => {
       let newpeer = new Peer({
         host: "/",
-        port: 9000,
+        port: 3000,
         path: "/peer",
       });
 

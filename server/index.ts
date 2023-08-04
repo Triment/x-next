@@ -44,28 +44,13 @@ const yoga = createYoga({
   // create websocket server
   const server = createServer(expressApp);
   const peerServer = ExpressPeerServer(server, {
-    //proxied: true,
-    //path: "/myapp",
+    proxied: true,
+    path: "/peer",
     alive_timeout: 30,
     host: new URL(process.env.DOMAIN!).host.split(":")[0],
-    port: 3000
   });
 
-  peerServer.on('connection',(client)=>{
-    console.log(client.getId())
-  })
-
-  peerServer.on('error',(error)=>{
-    console.log(error)
-  })
-  peerServer.on('message',(error)=>{
-    console.log(error)
-  })
-  peerServer.addListener('connection', (e)=>{
-    console.log(e)
-  })
-
-  expressApp.use(/\/peer+/, peerServer);
+  expressApp.use(peerServer);
   expressApp.use(async (req, res, next) => {
     const url = parse(req.url!, true);
     await handle(req, res, url);
