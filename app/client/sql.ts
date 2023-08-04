@@ -1,4 +1,4 @@
-import { graphql } from "../helpers/gql";
+import { graphql } from "../helpers/gql"
 
 export const PUBSUB_CHANNEL = graphql(`subscription PubSubChannel($id: ID = "") {
   exchange(id: $id) {

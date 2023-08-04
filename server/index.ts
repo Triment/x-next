@@ -44,10 +44,28 @@ const yoga = createYoga({
   // create websocket server
   const server = createServer(expressApp);
   const peerServer = ExpressPeerServer(server, {
-    proxied: true,
-    path: "/myapp",
+    //proxied: true,
+    //path: "/myapp",
+    alive_timeout: 30,
+    host: new URL(process.env.DOMAIN!).host.split(":")[0],
+    port: 3000
   });
-  expressApp.use("/peer", peerServer);
+
+  peerServer.on('connection',(client)=>{
+    console.log(client.getId())
+  })
+
+  peerServer.on('error',(error)=>{
+    console.log(error)
+  })
+  peerServer.on('message',(error)=>{
+    console.log(error)
+  })
+  peerServer.addListener('connection', (e)=>{
+    console.log(e)
+  })
+
+  expressApp.use(/\/peer+/, peerServer);
   expressApp.use(async (req, res, next) => {
     const url = parse(req.url!, true);
     await handle(req, res, url);
@@ -85,13 +103,18 @@ const yoga = createYoga({
     },
     wsServer
   );
-  await new Promise((resolve, reject) =>
+  await new Promise((resolve, reject) => {
     server.listen(port, () => {
       console.log(`
         > App started!
         HTTP server running on http://${hostname}:${port}
         GraphQL WebSocket server running on ws://${hostname}:${port}${graphqlEndpoint}
         `);
-    })
-  );
+    });
+    // peerServer.listen(parseInt(process.env.PEER_PORT!), ()=>{
+    //   console.log(`
+    //     > peerServer listen to ${process.env.PEER_PORT}
+    //   `)
+    // });
+  });
 })();

@@ -2,6 +2,7 @@
 const nextConfig = { 
   experimental: {
     esmExternals: 'loose',
+    serverActions: true
   },
   //useFileSystemPublicRoutes: false,
 }
